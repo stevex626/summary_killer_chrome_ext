@@ -1,2 +1,7 @@
-const text = document.body.innerText;
-chrome.runtime.sendMessage({type: "textData", data: text});
+chrome.runtime.onMessage.addListener((message) => {
+    if (message.type === "summaryData") {
+      const summary = message.data;
+      alert("Summary: " + summary);
+    }
+  });
+  
