@@ -1,12 +1,14 @@
+const failSummaryErrorMessage = "Failed to generate a summary."
+
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.type === "urlData") {
       const url = message.data;
 
-      chrome.storage.local.get([url], function(result) {
-        if (result[url]) {
-          // If the summary exists in storage, send it directly
-          chrome.tabs.sendMessage(sender.tab.id, {type: "summaryData", data: result[url]});
-        } else {
+      //chrome.storage.local.get([url], function(result) {
+        // if (result[url] && result[url] !== failSummaryErrorMessage) {
+        //   // If the summary exists in storage, send it directly
+        //   chrome.tabs.sendMessage(sender.tab.id, {type: "summaryData", data: result[url]});
+        // } else {
           // If not, get the summary from the server and store it
           fetch("http://localhost:5000/summarize", { 
             method: "POST",
@@ -18,12 +20,12 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           .then(response => response.json())
           .then(data => {
             console.log(data);
-            const summary = data.summary || "Failed to generate a summary.";
+            const summary = data.summary || failSummaryErrorMessage;
             chrome.storage.local.set({[url]: summary});  // Store the summary in Chrome storage
             chrome.tabs.sendMessage(sender.tab.id, {type: "summaryData", data: summary});
           });
-        }
-      });
+        //}
+      //});
     }
 });
 

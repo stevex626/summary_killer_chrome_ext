@@ -4,7 +4,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         chrome.runtime.sendMessage({type: "urlData", data: currentURL});
     } else if (message.type === "summaryData") {
         const summary = message.data;
-
+        console.log(summary);
         // Display the summary in a div instead of an alert.
         let summaryDiv = document.createElement("div");
         summaryDiv.innerHTML = `<h2>Summary:</h2><p>${summary}</p>`;
