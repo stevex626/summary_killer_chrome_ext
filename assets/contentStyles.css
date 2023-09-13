@@ -1,0 +1,18 @@
+#NLTK-summary-div {
+    position: fixed;
+    top: 10%;
+    left: 10%;
+    width: 80%;
+    height: auto;
+    background: white;
+    border: 2px solid #007BFF;
+    padding: 20px;
+    z-index: 999999;
+    overflow-y: scroll;
+    max-height: 70vh;
+    font-family: Arial, sans-serif;
+}
+
+#NLTK-summary-close-button {
+    margin-top: 20px;
+}
