@@ -1,4 +1,4 @@
-#NLTK-summary-div {
+.summary-div {
     position: fixed;
     top: 10%;
     left: 10%;
@@ -13,6 +13,6 @@
     font-family: Arial, sans-serif;
 }
 
-#NLTK-summary-close-button {
+.close-button {
     margin-top: 20px;
 }
