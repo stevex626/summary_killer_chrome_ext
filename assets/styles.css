@@ -16,3 +16,21 @@ body {
 #summarizeBtn:hover {
     background-color: #0056b3;
 }
+
+
+.summary-entry {
+    border: 1px solid #eee;
+    padding: 8px;
+    margin: 8px 0;
+}
+
+.summary-entry a {
+    display: block;
+    color: #007BFF;
+    text-decoration: none;
+}
+
+.summary-entry p {
+    margin-top: 6px;
+    word-wrap: break-word;
+}
