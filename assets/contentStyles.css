@@ -1,9 +1,12 @@
 /* Styling for the summary-div */
+* {
+    box-sizing: border-box;
+}
+
 .summary-div {
     position: fixed;
     top: 10%;
     left: 10%;
-    right: 10%;
     width: 80%;
     max-height: 70vh;
     overflow-y: auto;
@@ -12,9 +15,10 @@
     border-radius: 10px; 
     padding: 20px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    z-index: 9999; /* Ensure it stays on top */
+    z-index: 9999;
     animation: fadeIn 0.3s;
 }
+
 
 @keyframes fadeIn {
     from {
