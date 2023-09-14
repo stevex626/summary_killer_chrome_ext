@@ -8,9 +8,42 @@ document.getElementById('summarizeBtn').addEventListener('click', () => {
 
     chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
         const activeTab = tabs[0];
-        chrome.tabs.sendMessage(activeTab.id, {type: "startSummarization", title: title});
+        chrome.tabs.sendMessage(activeTab.id, {type: "startSummarization", title: title, isDeleted: false});
     });
 });
+
+const createConfirmationModal = (onCancel, onConfirm) => {
+    const modalContainer = document.createElement('div');
+    modalContainer.classList.add('modal-container');
+    
+    const modalContent = document.createElement('div');
+    modalContent.classList.add('modal-content');
+    
+    const messageElem = document.createElement('p');
+    messageElem.innerText = 'Are you sure you want to delete this summary?';
+    
+    const cancelButton = document.createElement('button');
+    cancelButton.innerText = 'Cancel';
+    cancelButton.addEventListener('click', () => {
+        onCancel();
+        modalContainer.remove();
+    });
+
+    const confirmButton = document.createElement('button');
+    confirmButton.innerText = 'Confirm';
+    confirmButton.addEventListener('click', () => {
+        onConfirm();
+        modalContainer.remove();
+    });
+
+    modalContent.appendChild(messageElem);
+    modalContent.appendChild(cancelButton);
+    modalContent.appendChild(confirmButton);    
+    modalContainer.appendChild(modalContent);
+
+    return modalContainer;
+};
+
 
 function displaySummaries(searchTitle = '') {
     chrome.storage.local.get(null, function(items) {
@@ -18,9 +51,9 @@ function displaySummaries(searchTitle = '') {
         container.innerHTML = ''; // Clear any previous entries
 
         for (const [url, data] of Object.entries(items)) {
-            if (!searchTitle || (data.title && data.title.toLowerCase().includes(searchTitle.toLowerCase()))) {
-                const summaryDiv = document.createElement('div');
-                summaryDiv.classList.add('summary-entry');
+            if (((!searchTitle) || (data.title && data.title.toLowerCase().includes(searchTitle.toLowerCase()))) && !data.isDeleted) {
+                const summaryEntry = document.createElement('div');
+                summaryEntry.classList.add('summary-entry');
 
                 const titleElem = document.createElement('h3');
                 titleElem.innerText = data.title;
@@ -53,12 +86,32 @@ function displaySummaries(searchTitle = '') {
                     }
                 };
 
+                const deleteButton = document.createElement('button');
+                deleteButton.innerText = 'Delete';
+                deleteButton.classList.add('delete-button');
+                deleteButton.onclick = function() {
+                    const modal = createConfirmationModal(
+                        () => {
+                            // On cancel
+                        },
+
+                        () => {
+                            // On confirm
+                            summaryEntry.remove();
+                            data.isDeleted = true;
+                            // Save the updated data to Chrome storage
+                            chrome.storage.local.set({[url]: data});
+                        },
+                    );
+                    document.body.appendChild(modal);
+                };            
                 summaryContainer.appendChild(summaryElem);
                 summaryContainer.appendChild(expandButton);
-                summaryDiv.appendChild(titleElem);
-                summaryDiv.appendChild(urlElem);
-                summaryDiv.appendChild(summaryContainer);
-                container.appendChild(summaryDiv);
+                summaryEntry.appendChild(titleElem);
+                summaryEntry.appendChild(urlElem);
+                summaryEntry.appendChild(summaryContainer);
+                container.appendChild(summaryEntry);
+                summaryContainer.appendChild(deleteButton);
             }
         }
     });
