@@ -52,6 +52,17 @@ input[type="text"]:focus {
     transform: scale(1.05);  /* A subtle zoom on hover */
 }
 
+#pastSummaryTitle {
+    font-size: 20px;             
+    color: #333;                 
+    font-weight: 600;            
+    margin-bottom: 10px;         
+    margin-top: 20px;             
+    text-transform: uppercase;
+    letter-spacing: 1.5px;     
+}
+
+
 /* Styling for the the summary-entry */
 
 .search-summary-section {
