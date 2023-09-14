@@ -1,36 +1,108 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Roboto', sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 380px;  /* width slightly less than the default to account for potential scrollbar */
+    max-height: 480px;  /* max height slightly less than the default to ensure fit */
+    overflow-y: auto;  /* if content is taller than max-height, allow scrolling */
+}
+
+
+input[type="text"] {
     padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 1px;
+    transition: border-color 0.3s;
+}
+
+input[type="text"]:focus {
+    border-color: #007BFF;
+    outline: none;
+}
+
+#error {
+    margin-top: 0px;
+    margin-bottom: 5px;
+    margin-left: 15px;
+    text-align: left;
+    width: 100%;
+    color: red; 
 }
 
 #summarizeBtn {
     background-color: #007BFF;
     border: none;
-    border-radius: 5px;
+    border-radius: 4px;  /* Slightly rounded corners */
     color: white;
     padding: 10px 15px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.3s;
+    margin-bottom: 40px;  /* Spacing between button and the next element */
 }
 
 #summarizeBtn:hover {
     background-color: #0056b3;
+    transform: scale(1.05);  /* A subtle zoom on hover */
 }
 
+/* Styling for the the summary-entry */
+
+.search-summary-section {
+    width: 100%;
+}
 
 .summary-entry {
-    border: 1px solid #eee;
-    padding: 8px;
+    border: 1px solid #dee2e6;  /* A subtler border color */
+    padding: 10px;  /* Slightly more padding */
     margin: 8px 0;
+    border-radius: 4px;  /* Rounded corners for entries */
+    background-color: #ffffff;  /* White background for summaries */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);  /* A light shadow for depth */
+}
+
+.summary-entry:hover {
+    background-color: #f1f3f5;  /* A hover effect */
 }
 
 .summary-entry a {
     display: block;
     color: #007BFF;
     text-decoration: none;
+    margin-bottom: 8px;  /* Spacing between link and summary text */
 }
 
 .summary-entry p {
     margin-top: 6px;
     word-wrap: break-word;
+    max-height: 50px;
+    overflow: hidden;
 }
+
+.summary-expanded p {
+    max-height: none;
+}
+
+.summary-entry button {
+    background: none;
+    border: none;
+    color: #007BFF;
+    cursor: pointer;
+    padding: 0;
+    margin-top: 10px;
+    font-size: 1em;
+    font-family: inherit;
+}
+
+.summary-entry p.collapsed {
+    max-height: 50px;
+    overflow: hidden;
+}
+
+
