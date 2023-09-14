@@ -52,6 +52,8 @@ input[type="text"]:focus {
     transform: scale(1.05);  /* A subtle zoom on hover */
 }
 
+/* Styling for the the summary-entry */
+
 .search-summary-section {
     width: 100%;
 }

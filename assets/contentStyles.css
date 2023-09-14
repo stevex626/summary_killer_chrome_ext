@@ -1,18 +1,61 @@
+/* Styling for the summary-div */
 .summary-div {
     position: fixed;
     top: 10%;
     left: 10%;
+    right: 10%;
     width: 80%;
-    height: auto;
-    background: white;
-    border: 2px solid #007BFF;
-    padding: 20px;
-    z-index: 999999;
-    overflow-y: scroll;
     max-height: 70vh;
-    font-family: Arial, sans-serif;
+    overflow-y: auto;
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 10px; 
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    z-index: 9999; /* Ensure it stays on top */
+    animation: fadeIn 0.3s;
 }
 
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Styling for the close-button inside the summary-div */
 .close-button {
-    margin-top: 20px;
+    background-color: #007BFF;
+    color: #ffffff;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    float: right; /* Aligns it to the top-right corner */
+    transition: background-color 0.3s;
+    font-size: 0.9em;
+}
+
+.close-button:hover {
+    background-color: #0056b3;
+}
+
+/* Enhance the style for the summary content */
+.summary-div h2 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #333;
+    font-weight: bold;
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 10px;
+}
+
+.summary-div p {
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 20px;
 }
