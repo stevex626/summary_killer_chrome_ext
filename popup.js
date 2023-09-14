@@ -6,11 +6,20 @@ document.getElementById('summarizeBtn').addEventListener('click', () => {
         return;
     }
 
+    // Replace the button's text with the loader when generating
+    const summarizeBtn = document.getElementById('summarizeBtn');
+    summarizeBtn.innerHTML = '<div class="loader"></div>';
+
     chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
         const activeTab = tabs[0];
         chrome.tabs.sendMessage(activeTab.id, {type: "startSummarization", title: title, isDeleted: false});
     });
 });
+
+const truncateUrl = (url, maxLength = 40) => {
+    if (url.length <= maxLength) return url;
+    return `${url.substring(0, maxLength - 3)}...`;
+}
 
 const createConfirmationModal = (onCancel, onConfirm) => {
     const modalContainer = document.createElement('div');
@@ -66,7 +75,8 @@ function displaySummaries(searchTitle = '') {
                 const urlElem = document.createElement('a');
                 urlElem.href = url;
                 urlElem.target = "_blank";
-                urlElem.innerText = url;
+                const truncatedUrl = truncateUrl(url);
+                urlElem.innerText = truncatedUrl;
 
                 const summaryContainer = document.createElement('div');
                 summaryContainer.style.position = 'relative';

@@ -15,6 +15,11 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         closeButton.innerText = "Close";
         closeButton.onclick = () => { summaryDiv.remove(); };
         
+        const summarizeBtn = document.getElementById('summarizeBtn');
+        if (summarizeBtn) {
+            summarizeBtn.textContent = 'Summarize';
+        }
+        
         summaryDiv.appendChild(closeButton);
         document.body.appendChild(summaryDiv);
     }
