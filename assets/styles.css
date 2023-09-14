@@ -11,6 +11,21 @@ body {
     overflow-y: auto;  /* if content is taller than max-height, allow scrolling */
 }
 
+.header-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px; /* add some space below the header */
+    justify-content: center;
+    width: 100%;
+}
+
+.logo {
+    width: 200px; /* adjust this as needed for your logo size */
+    height: 130px;
+    align-items: center;
+    margin-left: 0;
+}
+
 
 input[type="text"] {
     padding: 10px;
