@@ -24,11 +24,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         })
         .then(response => response.json())
         .then(data => {
-          console.log(data)
-          const summary = data.summary || failSummaryErrorMessage;
-          chrome.storage.local.set({[url]: {title: title, summary: summary, isDeleted: isDeleted}});
-          chrome.tabs.sendMessage(sender.tab.id, {type: "summaryData", data: summary, isDeleted: isDeleted});
+            console.log(data);
+            const summary = data.summary || failSummaryErrorMessage; // To check for summary
+            const timestamp = Date.now();  // Get current timestamp
+            chrome.storage.local.set({[url]: {title: title, summary: summary, timestamp: timestamp, isDeleted: isDeleted}});
+            chrome.tabs.sendMessage(sender.tab.id, {type: "summaryData", data: summary, isDeleted: isDeleted});
         });
+
       }
     });
   }

@@ -50,7 +50,12 @@ function displaySummaries(searchTitle = '') {
         const container = document.getElementById('summariesContainer');
         container.innerHTML = ''; // Clear any previous entries
 
-        for (const [url, data] of Object.entries(items)) {
+        // Convert entries to an array and sort by timestamp
+        const sortedEntries = Object.entries(items).sort((a, b) => {
+            return (b[1].timestamp || 0) - (a[1].timestamp || 0);
+        });
+
+        for (const [url, data] of sortedEntries) {
             if (((!searchTitle) || (data.title && data.title.toLowerCase().includes(searchTitle.toLowerCase()))) && !data.isDeleted) {
                 const summaryEntry = document.createElement('div');
                 summaryEntry.classList.add('summary-entry');
