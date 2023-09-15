@@ -2,20 +2,32 @@
 <html>
 <head>
     <title>Summary Killer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="./assets/styles.css">
 </head>
 <body>
-    <div class="header-container">
-        <img src="./assets/logo.png" alt="Logo" class="logo">
+    <!-- SIGN-IN UI -->
+    <div id="signInContainer">
+        <h3>Welcome To Summary Killer! Please Sign In Below</h3>
+        <button id="signInBtn">Sign in with Google</button>
     </div>
-    <input type="text" id="titleInput" placeholder="Please enter a title for the summary...">
-    <p id="error" style="color: red;"></p>
-    <button id="summarizeBtn">Summarize</button>
-    <h2 id="pastSummaryTitle">Past Summary</h2>
-    <input type="text" id="searchInput" placeholder="Search Summary (Enter Title)">
-    <div id="summariesContainer">
-        <!-- Summaries will be appended here dynamically from popup.js -->
+
+    <!-- MAIN UI -->
+    <div id="mainUIContainer" style="display: none;">
+        <div class="header-container">
+            <img src="./assets/logo.png" alt="Logo" class="logo">
+        </div>
+        <input type="text" id="titleInput" placeholder="Please enter a title for the summary...">
+        <p id="error" style="color: red;"></p>
+        <button id="summarizeBtn">Summarize</button>
+        <h2 id="pastSummaryTitle">Past Summary</h2>
+        <input type="text" id="searchInput" placeholder="Search Summary (Enter Title)">
+        <div id="summariesContainer">
+            <!-- Summaries will be appended here dynamically from popup.js -->
+        </div>
     </div>
+
     <script src="popup.js"></script>
 </body>
 </html>
+

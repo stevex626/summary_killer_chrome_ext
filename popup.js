@@ -1,3 +1,79 @@
+document.addEventListener('DOMContentLoaded', function () {
+    checkUserStatus();
+
+    document.getElementById('signInBtn').addEventListener('click', function() {
+        signInWithGoogle();
+    });
+});
+
+function checkUserStatus() {
+    chrome.storage.local.get(['signedIn'], function(result) {
+        if (result.signedIn) {
+            // User is signed in
+            showMainUI();
+        } else {
+            // User is not signed in
+            showSignInUI();
+        }
+    });
+}
+
+function showSignInUI() {
+    document.getElementById('signInContainer').style.display = 'block';
+    document.getElementById('mainUIContainer').style.display = 'none';
+}
+
+function showMainUI() {
+    document.getElementById('signInContainer').style.display = 'none';
+    document.getElementById('mainUIContainer').style.display = 'block';
+    displaySummaries();  // Load summaries when main UI is shown
+}
+
+function signInWithGoogle() {
+    let authUrl = 'https://accounts.google.com/o/oauth2/auth' +
+        '?client_id=' + encodeURIComponent('28083851031-grhm4sqbubval5m3pst6jq00ldnd43qi.apps.googleusercontent.com') +
+        '&response_type=id_token' +
+        '&redirect_uri=' + encodeURIComponent(`https://ohniidicphccnjfijjpjmeomgjhnkbni.chromiumapp.org`) +
+        '&scope=openid email profile';
+
+    chrome.identity.launchWebAuthFlow({
+        'url': authUrl,
+        'interactive': true
+    }, function (responseUrl) {
+        if (chrome.runtime.lastError) {
+            console.log(chrome.runtime.lastError);
+            return;
+        }
+
+        let id_token = responseUrl.substring(responseUrl.indexOf("id_token=") + 9);
+        id_token = id_token.substring(0, id_token.indexOf('&'));
+        console.log(id_token);
+        // Send this token to your server for verification and get user details.
+        
+        fetch('http://localhost:5000/verifyToken', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ idToken: id_token }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message && data.message === 'Successfully authenticated') {
+                chrome.storage.local.set({signedIn: true}, function() {
+                    showMainUI();
+                });
+            } else {
+                console.error(data.error);
+                showSignInUI();
+            }
+        })
+        .catch(error => {
+            console.error("Token verification failed:", error);
+        });
+    });
+}
+
 document.getElementById('summarizeBtn').addEventListener('click', () => {
     const title = document.getElementById('titleInput').value.trim();
 
@@ -65,7 +141,7 @@ function displaySummaries(searchTitle = '') {
         });
 
         for (const [url, data] of sortedEntries) {
-            if (((!searchTitle) || (data.title && data.title.toLowerCase().includes(searchTitle.toLowerCase()))) && !data.isDeleted) {
+            if (((!searchTitle) || (data.title && data.title.toLowerCase().includes(searchTitle.toLowerCase()))) && !data.isDeleted && !(url==="signedIn")) {
                 const summaryEntry = document.createElement('div');
                 summaryEntry.classList.add('summary-entry');
 
