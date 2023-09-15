@@ -35,8 +35,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                   summarizeBtn.textContent = 'Summarize';
               }
             }
-
-            const timestamp = Date.now();  // Get current timestamp
+            const timestamp = Date.now();
             chrome.storage.local.set({[url]: {title: title, summary: summary, timestamp: timestamp, isDeleted: isDeleted}});
             chrome.tabs.sendMessage(sender.tab.id, {type: "summaryData", data: summary, isDeleted: isDeleted});
         });
