@@ -9,10 +9,8 @@ document.addEventListener('DOMContentLoaded', function () {
 function checkUserStatus() {
     chrome.storage.local.get(['signedIn'], function(result) {
         if (result.signedIn) {
-            // User is signed in
             showMainUI();
         } else {
-            // User is not signed in
             showSignInUI();
         }
     });
@@ -47,10 +45,8 @@ function signInWithGoogle() {
 
         let id_token = responseUrl.substring(responseUrl.indexOf("id_token=") + 9);
         id_token = id_token.substring(0, id_token.indexOf('&'));
-        console.log(id_token);
-        // Send this token to your server for verification and get user details.
         
-        fetch('http://localhost:5000/verifyToken', {
+        fetch('http://localhost:6565/verifyToken', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -183,14 +179,11 @@ function displaySummaries(searchTitle = '') {
                 deleteButton.onclick = function() {
                     const modal = createConfirmationModal(
                         () => {
-                            // On cancel
                         },
 
                         () => {
-                            // On confirm
                             summaryEntry.remove();
                             data.isDeleted = true;
-                            // Save the updated data to Chrome storage
                             chrome.storage.local.set({[url]: data});
                         },
                     );
@@ -208,10 +201,8 @@ function displaySummaries(searchTitle = '') {
     });
 }
 
-// Handle search input
 document.getElementById('searchInput').addEventListener('input', (e) => {
     displaySummaries(e.target.value);
 });
 
-// Display summaries on popup load
 displaySummaries();

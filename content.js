@@ -1,17 +1,16 @@
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.type === "startSummarization") {
-        let currentURL = window.location.href;  // Get current URL
+        let currentURL = window.location.href; 
         chrome.runtime.sendMessage({type: "urlData", data: currentURL, title: message.title, isDeleted: message.isDeleted});
     } else if (message.type === "summaryData") {
         const summary = message.data;
-        console.log(summary);
-        // Display the summary in a div instead of an alert.
+
         let summaryDiv = document.createElement("div");
-        summaryDiv.classList.add('summary-div'); // Add the class for styling
+        summaryDiv.classList.add('summary-div'); 
         summaryDiv.innerHTML = `<h2>Summary:</h2><p>${summary}</p>`;
         
         let closeButton = document.createElement("button");
-        closeButton.classList.add('close-button'); // Add the class for styling
+        closeButton.classList.add('close-button');
         closeButton.innerText = "Close";
         closeButton.onclick = () => { summaryDiv.remove(); };
         
@@ -22,6 +21,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         
         summaryDiv.appendChild(closeButton);
         document.body.appendChild(summaryDiv);
+        
+    }  else if (message.type === "contentTooLongError") {
+        alert("Content is too long to summarize!");
+        const summarizeBtn = document.getElementById('summarizeBtn');
+        if (summarizeBtn) {
+            summarizeBtn.textContent = 'Summarize';
+        }
     }
 });
 

@@ -1,4 +1,5 @@
 const failSummaryErrorMessage = 'Failed to generate a summary!';
+const failFetchErrorMessage = 'Failed to fetch article content';
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === "urlData") {
@@ -8,15 +9,15 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
     chrome.storage.local.get([url], function(result) {
       if (result[url] && result[url].summary !== failSummaryErrorMessage) {
-        // If the summary exists in storage, send it directly
+
         if (result[url].isDeleted) {
           const timestamp = Date.now();
           chrome.storage.local.set({[url]: {title: title, summary: result[url].summary, isDeleted: isDeleted, timestamp:timestamp}});
         }
         chrome.tabs.sendMessage(sender.tab.id, {type: "summaryData", data: result[url].summary, isDeleted: false,  timestamp: result[url].timestamp});
       } else {
-        // If not, get the summary from the server and store it
-        fetch("http://localhost:5000/summarize", {
+
+        fetch("http://localhost:6565/summarize", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -25,21 +26,19 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         })
         .then(response => response.json())
         .then(data => {
-            console.log(data);
-            const summary = data.summary || failSummaryErrorMessage; // To check for summary
-
-            // Change the button back to text from loading if there is error generating the summary
-            if (summary === failSummaryErrorMessage) {
-              const summarizeBtn = document.getElementById('summarizeBtn');
-              if (summarizeBtn) {
-                  summarizeBtn.textContent = 'Summarize';
+          const summary = data.summary;
+          if (data.error) {
+              if (data.error === "Content is too long to summarize") {
+                  chrome.tabs.sendMessage(sender.tab.id, {type: "contentTooLongError", errorMsg: data.error});
+              } else {
+                  chrome.tabs.sendMessage(sender.tab.id, {type: "summaryError", errorMsg: data.error});
               }
+          } else {
+              const timestamp = Date.now();
+              chrome.storage.local.set({[url]: {title: title, summary: summary, timestamp: timestamp, isDeleted: isDeleted}});
+              chrome.tabs.sendMessage(sender.tab.id, {type: "summaryData", data: summary});
             }
-            const timestamp = Date.now();
-            chrome.storage.local.set({[url]: {title: title, summary: summary, timestamp: timestamp, isDeleted: isDeleted}});
-            chrome.tabs.sendMessage(sender.tab.id, {type: "summaryData", data: summary, isDeleted: isDeleted});
-        });
-
+        })
       }
     });
   }
