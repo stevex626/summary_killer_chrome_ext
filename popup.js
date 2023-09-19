@@ -126,6 +126,7 @@ const createConfirmationModal = (onCancel, onConfirm) => {
 };
 
 
+
 function displaySummaries(searchTitle = '') {
     chrome.storage.local.get(null, function(items) {
         const container = document.getElementById('summariesContainer');
@@ -206,3 +207,8 @@ document.getElementById('searchInput').addEventListener('input', (e) => {
 });
 
 displaySummaries();
+
+
+document.getElementById('privacyLink').addEventListener('click', function() {
+    chrome.tabs.create({url: 'privacy_notice.html'});
+});

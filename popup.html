@@ -17,14 +17,22 @@
         <div class="header-container">
             <img src="./assets/logo.png" alt="Logo" class="logo">
         </div>
+        
         <input type="text" id="titleInput" placeholder="Please enter a title for the summary...">
         <p id="error" style="color: red;"></p>
         <button id="summarizeBtn">Summarize</button>
+
         <h2 id="pastSummaryTitle">Past Summary</h2>
         <input type="text" id="searchInput" placeholder="Search Summary (Enter Title)">
+
         <div id="summariesContainer">
             <!-- Summaries will be appended here dynamically from popup.js -->
         </div>
+
+        <div id="privacyNoticeContainer">
+            <a href="#" id="privacyLink">Privacy Notice</a>
+        </div>
+
     </div>
 
     <script src="popup.js"></script>
