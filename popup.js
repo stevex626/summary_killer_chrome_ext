@@ -46,7 +46,7 @@ function signInWithGoogle() {
         let id_token = responseUrl.substring(responseUrl.indexOf("id_token=") + 9);
         id_token = id_token.substring(0, id_token.indexOf('&'));
         
-        fetch('http://localhost:5000/verifyToken', {
+        fetch('http://ec2-3-137-169-102.us-east-2.compute.amazonaws.com:6565/verifyToken', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -78,7 +78,6 @@ document.getElementById('summarizeBtn').addEventListener('click', () => {
         return;
     }
 
-    // Replace the button's text with the loader when generating
     const summarizeBtn = document.getElementById('summarizeBtn');
     summarizeBtn.innerHTML = '<div class="loader"></div>';
 
@@ -130,9 +129,8 @@ const createConfirmationModal = (onCancel, onConfirm) => {
 function displaySummaries(searchTitle = '') {
     chrome.storage.local.get(null, function(items) {
         const container = document.getElementById('summariesContainer');
-        container.innerHTML = ''; // Clear any previous entries
+        container.innerHTML = '';
 
-        // Convert entries to an array and sort by timestamp
         const sortedEntries = Object.entries(items).sort((a, b) => {
             return (b[1].timestamp || 0) - (a[1].timestamp || 0);
         });
