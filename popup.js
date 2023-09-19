@@ -46,7 +46,7 @@ function signInWithGoogle() {
         let id_token = responseUrl.substring(responseUrl.indexOf("id_token=") + 9);
         id_token = id_token.substring(0, id_token.indexOf('&'));
         
-        fetch('http://localhost:6565/verifyToken', {
+        fetch('http://localhost:5000/verifyToken', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
