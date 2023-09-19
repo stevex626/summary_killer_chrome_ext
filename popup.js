@@ -46,7 +46,7 @@ function signInWithGoogle() {
         let id_token = responseUrl.substring(responseUrl.indexOf("id_token=") + 9);
         id_token = id_token.substring(0, id_token.indexOf('&'));
         
-        fetch('http://localhost:6565/verifyToken', {
+        fetch('http://localhost:5000/verifyToken', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -124,6 +124,7 @@ const createConfirmationModal = (onCancel, onConfirm) => {
 
     return modalContainer;
 };
+
 
 
 function displaySummaries(searchTitle = '') {
@@ -206,3 +207,8 @@ document.getElementById('searchInput').addEventListener('input', (e) => {
 });
 
 displaySummaries();
+
+
+document.getElementById('privacyLink').addEventListener('click', function() {
+    chrome.tabs.create({url: 'privacy_notice.html'});
+});
