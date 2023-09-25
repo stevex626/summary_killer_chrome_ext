@@ -17,7 +17,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         chrome.tabs.sendMessage(sender.tab.id, {type: "summaryData", data: result[url].summary, isDeleted: false,  timestamp: result[url].timestamp});
       } else {
 
-        fetch("http://ec2-3-137-169-102.us-east-2.compute.amazonaws.com:6565/summarize", {
+        fetch("https://www.summarykiller.com:8000/summarize", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
@@ -26,7 +26,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         })
         .then(response => response.json())
         .then(data => {
-          console.log(data);
           const summary = data.summary;
           if (data.error) {
               if (data.error === "Content is too long to summarize") {
