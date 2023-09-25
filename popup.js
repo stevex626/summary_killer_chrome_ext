@@ -46,7 +46,7 @@ function signInWithGoogle() {
         let id_token = responseUrl.substring(responseUrl.indexOf("id_token=") + 9);
         id_token = id_token.substring(0, id_token.indexOf('&'));
         
-        fetch('http://ec2-3-137-169-102.us-east-2.compute.amazonaws.com:6565/verifyToken', {
+        fetch('https://www.summarykiller.com:8000/verifyToken', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -60,12 +60,12 @@ function signInWithGoogle() {
                     showMainUI();
                 });
             } else {
-                console.error(data.error);
                 showSignInUI();
             }
         })
         .catch(error => {
             console.error("Token verification failed:", error);
+            showSignInUI();
         });
     });
 }
