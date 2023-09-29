@@ -31,7 +31,7 @@ function signInWithGoogle() {
     let authUrl = 'https://accounts.google.com/o/oauth2/auth' +
         '?client_id=' + encodeURIComponent('28083851031-grhm4sqbubval5m3pst6jq00ldnd43qi.apps.googleusercontent.com') +
         '&response_type=id_token' +
-        '&redirect_uri=' + encodeURIComponent(`https://ohniidicphccnjfijjpjmeomgjhnkbni.chromiumapp.org`) +
+        '&redirect_uri=' + encodeURIComponent(`https://bkicocpnjjakconibpmfkhfaglegeekg.chromiumapp.org`) +
         '&scope=openid email';
 
     chrome.identity.launchWebAuthFlow({
